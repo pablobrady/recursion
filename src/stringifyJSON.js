@@ -1,7 +1,7 @@
 // this is what you would do if you liked things to be easy:
-var stringifyJSON = JSON.stringify;
+// var stringifyJSON = JSON.stringify;
 // console.log("Goal:  " + stringifyJSON([1, [2,4,6], "three"]));
-console.log("Project Goal:  " + stringifyJSON(9) ); // gives --> "[9]"
+// console.log("Project Goal:  " + stringifyJSON(9) ); // gives --> "[9]"
 
 // but you don't so you're going to write it from scratch:
 
@@ -10,8 +10,29 @@ var stringifyJSON = function(obj) {
   var count = 0;
   var delimiter = ""; // "[";
 
-  if( (typeof obj === "number") ){
+  console.log("> Primitive of value, type: " + obj + ", " + typeof obj + " <");
+
+// if(obj === undefined) { console.log("undefined!!!!!"); }
+// if(obj === null) { console.log("null!!!!!"); }
+// if(typeof obj === "object") { console.log("AN OBJECT!!!!   Is it null????"); }
+// if(obj === "") { console.log("empty!!!!!"); }
+// if( Number(obj) === obj ) { console.log("EXACTLY A NUMBER!"); }
+// if( String(obj) === obj ) { console.log("EXACTLY A STRING!"); }
+
+
+  if( obj === undefined ) {
+      console.log("undefined value... ignoring.")
+      return;
+
+  } else if( obj === null ) {
+      console.log("null value... ignoring.")
+      return "null";
+
+  } else if( (typeof obj === "number") ){
     console.log("Primitive Number - " + obj + " " + typeof obj);
+
+    // Be warned/Caution JS normally thinks:  typeof NaN === Number
+
     return String( obj ); // "" + obj + "";
     /*
       9 != '9' --> return obj(==9) fails.
@@ -60,7 +81,7 @@ var stringifyJSON = function(obj) {
 };
 
 // console.log( stringifyJSON( [1, [2,4,6], "three"] ) ) ;
-console.log( "My result:  " + stringifyJSON(9) ) ;
+// console.log( "My result:  " + stringifyJSON(9) ) ;
 
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
