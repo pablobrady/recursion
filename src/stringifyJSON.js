@@ -47,6 +47,8 @@ var stringifyJSON = function(obj) {
 
   } else if ( typeof obj === 'string' ) {
     return '"' + obj + '"';
+
+    
   
   } else if ( typeof obj === 'object' ) {
     retStr += "{";
