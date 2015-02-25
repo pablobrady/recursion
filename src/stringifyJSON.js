@@ -8,7 +8,7 @@
 var stringifyJSON = function(obj) {
   var retStr = "";
   var count = 0;
-  var delimiter = ""; // "[";
+  var delimiter = "[";
 
   console.log("> Primitive of value, type: " + obj + ", " + typeof obj + " <");
 
@@ -19,19 +19,25 @@ var stringifyJSON = function(obj) {
 // if( Number(obj) === obj ) { console.log("EXACTLY A NUMBER!"); }
 // if( String(obj) === obj ) { console.log("EXACTLY A STRING!"); }
 
+// Be warned/Caution JS normally thinks:  typeof NaN === Number
+
 
   if( obj === undefined ) {
-      console.log("undefined value... ignoring.")
-      return;
+    console.log("undefined value... ignoring.")
+    return;
 
   } else if( obj === null ) {
-      console.log("null value... ignoring.")
-      return "null";
+    console.log("null value... ignoring.")
+    return "null";
+
+  } else if( Array.isArray(obj) && obj.length==0 ){
+    console.log("EMPTY ARRAY!!!!");
+    return "[]";
 
   } else if( (typeof obj === "number") ){
     console.log("Primitive Number - " + obj + " " + typeof obj);
 
-    // Be warned/Caution JS normally thinks:  typeof NaN === Number
+
 
     return String( obj ); // "" + obj + "";
     /*
@@ -77,7 +83,7 @@ var stringifyJSON = function(obj) {
     count++;
   };
 
-  return retStr + ""; // "]";
+  return retStr + "]";
 };
 
 // console.log( stringifyJSON( [1, [2,4,6], "three"] ) ) ;
