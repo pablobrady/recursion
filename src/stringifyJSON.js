@@ -22,20 +22,23 @@ var stringifyJSON = function(obj) {
 // Be warned/Caution JS normally thinks:  typeof NaN === Number
 
 
+  // EMPTY TESTS...
   if( obj === undefined ) {
-    console.log("undefined value... ignoring.")
+    console.log('undefined value... ignoring.')
     return;
 
   } else if( obj === null ) {
-    console.log("null value... ignoring.")
-    return "null";
+    console.log('null value... ignoring.')
+    return 'null';
 
   } else if( Array.isArray(obj) && obj.length==0 ){
-    console.log("EMPTY ARRAY!!!!");
-    return "[]";
+    console.log('empty array... [].');
+    return '[]';
 
-  } else if( (typeof obj === "number") ){
-    console.log("Primitive Number - " + obj + " " + typeof obj);
+
+  // PRIMITIVE TESTS...
+  } else if( (typeof obj === 'number') ){
+    console.log('Primitive Number - ' + obj + ' ' + typeof obj);
 
 
 
@@ -49,41 +52,41 @@ var stringifyJSON = function(obj) {
 
 
     */
-  } else if ( typeof obj === "boolean" ){
-    console.log("Primitive boolean.");
-    return "" + obj + "";
+  } else if ( typeof obj === 'boolean' ){
+    console.log('Primitive boolean.');
+    return '' + obj + '';
 
-  } else if ( typeof obj === "string") {
-    console.log("Primitive string.");
-    return "\"" + obj + "\"";
+  } else if ( typeof obj === 'string') {
+    console.log('Primitive string.');
+    return '"' + obj + '"';
   }
 
 
+  // OBJECT TESTS...
   for ( var p in obj ) { 
-    // console.log("p = " + p);
-    if(count>=1) { delimiter=","; }
+    if(count>=1) { delimiter=','; }
 
     if( obj[p] === undefined ) {
-      console.log("undefined value... ignoring.")
+      console.log('Object contained - undefined... ignoring.')
       ; // ignore
 
-    } else if((typeof obj[p] === "number") || (typeof obj[p] === "boolean")) {
-      console.log("number or boolean.");
+    } else if((typeof obj[p] === 'number') || (typeof obj[p] === 'boolean')) {
+      console.log('Object contained - number or boolean.');
       retStr += delimiter + obj[p];
 
-    } else if(typeof obj[p] === "string") {
-      console.log("string.");
+    } else if(typeof obj[p] === 'string') {
+      console.log('Object contained - string.');
       retStr += delimiter + "\"" + obj[p] + "\"";
 
-    } else if(typeof obj[p] === "object") {
-      console.log("object.");
+    } else if(typeof obj[p] === 'object') {
+      console.log('Object contained - object.');
       retStr += delimiter + stringifyJSON( obj[p] );
 
     }
     count++;
   };
 
-  return retStr + "]";
+  return retStr + ']';
 };
 
 // console.log( stringifyJSON( [1, [2,4,6], "three"] ) ) ;
