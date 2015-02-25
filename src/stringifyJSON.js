@@ -10,7 +10,7 @@ var stringifyJSON = function(obj) {
   var count = 0;
   var delimiter = "[";
 
-  console.log("> Primitive of value, type: " + obj + ", " + typeof obj + " <");
+  console.log(">>> Value (type): " + obj + " (" + typeof obj + ") <<<");
 
 // if(obj === undefined) { console.log("undefined!!!!!"); }
 // if(obj === null) { console.log("null!!!!!"); }
@@ -31,9 +31,19 @@ var stringifyJSON = function(obj) {
     console.log('null value... ignoring.')
     return 'null';
 
+
+  // ARRAY TESTS...
   } else if( Array.isArray(obj) && obj.length==0 ){
     console.log('empty array... [].');
     return '[]';
+
+  } else if( Array.isArray(obj) && obj.length>0 ){
+    console.log('Populated array... [x].');
+    retStr += '[';
+    for (var arrIdx = 0; arrIdx < obj.length; arrIdx++) {
+      retStr += stringifyJSON( obj[arrIdx] );
+    };
+    // retStr += ']';
 
 
   // PRIMITIVE TESTS...
@@ -56,35 +66,42 @@ var stringifyJSON = function(obj) {
     console.log('Primitive boolean.');
     return '' + obj + '';
 
-  } else if ( typeof obj === 'string') {
+  } else if ( typeof obj === 'string' ) {
     console.log('Primitive string.');
     return '"' + obj + '"';
+  
+  } else if ( typeof obj === 'object' ) {
+    console.log('Is an Object... recurse it.');
+    return "<some object>"; //stringifyJSON( obj );
+
   }
 
 
-  // OBJECT TESTS...
-  for ( var p in obj ) { 
-    if(count>=1) { delimiter=','; }
 
-    if( obj[p] === undefined ) {
-      console.log('Object contained - undefined... ignoring.')
-      ; // ignore
 
-    } else if((typeof obj[p] === 'number') || (typeof obj[p] === 'boolean')) {
-      console.log('Object contained - number or boolean.');
-      retStr += delimiter + obj[p];
+  // // OBJECT TESTS...
+  // for ( var p in obj ) { 
+  //   if(count>=1) { delimiter=','; }
 
-    } else if(typeof obj[p] === 'string') {
-      console.log('Object contained - string.');
-      retStr += delimiter + "\"" + obj[p] + "\"";
+  //   if( obj[p] === undefined ) {
+  //     console.log('Object contained - undefined... ignoring.')
+  //     ; // ignore
 
-    } else if(typeof obj[p] === 'object') {
-      console.log('Object contained - object.');
-      retStr += delimiter + stringifyJSON( obj[p] );
+  //   } else if((typeof obj[p] === 'number') || (typeof obj[p] === 'boolean')) {
+  //     console.log('Object contained - number or boolean.');
+  //     retStr += delimiter + obj[p];
 
-    }
-    count++;
-  };
+  //   } else if(typeof obj[p] === 'string') {
+  //     console.log('Object contained - string.');
+  //     retStr += delimiter + "\"" + obj[p] + "\"";
+
+  //   } else if(typeof obj[p] === 'object') {
+  //     console.log('Object contained - object.');
+  //     retStr += delimiter + stringifyJSON( obj[p] );
+
+  //   }
+  //   count++;
+  // };
 
   return retStr + ']';
 };
