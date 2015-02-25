@@ -1,28 +1,15 @@
 // this is what you would do if you liked things to be easy:
 // var stringifyJSON = JSON.stringify;
 // console.log("Goal:  " + stringifyJSON([1, [2,4,6], "three"]));
-// console.log("Project Goal:  " + stringifyJSON(9) ); // gives --> "[9]"
 
 // but you don't so you're going to write it from scratch:
-
-var supercounter = 0;
 
 var stringifyJSON = function(obj) {
   var retStr = "";
   var count = 0;
   var delimiter = "[";
 
-  supercounter++;
-  console.log("#" + supercounter + " - " + obj + " (" + typeof obj + "):");
-
-// if(obj === undefined) { console.log("undefined!!!!!"); }
-// if(obj === null) { console.log("null!!!!!"); }
-// if(typeof obj === "object") { console.log("AN OBJECT!!!!   Is it null????"); }
-// if(obj === "") { console.log("empty!!!!!"); }
-// if( Number(obj) === obj ) { console.log("EXACTLY A NUMBER!"); }
-// if( String(obj) === obj ) { console.log("EXACTLY A STRING!"); }
-
-// Be warned/Caution JS normally thinks:  typeof NaN === Number
+  // console.log('' + obj + ' (' + typeof obj + '):');
 
   var stringifiableValue = function(testValue) {
     if (testValue === undefined ) { return false; };
@@ -32,21 +19,17 @@ var stringifyJSON = function(obj) {
 
   // EMPTY TESTS...
   if( obj === undefined ) {
-    console.log('----------- undefined value... ignoring.')
     return;
 
   } else if( obj === null ) {
-    console.log('----------- null value... ignoring.')
     return 'null';
 
 
   // ARRAY TESTS...
   } else if( Array.isArray(obj) && obj.length==0 ){
-    console.log('----------- empty array... [].');
     return '[]';
 
   } else if( Array.isArray(obj) && obj.length>0 ){
-    console.log('----------- Populated array... [x].');
     retStr += '[';
     for (var arrIdx = 0; arrIdx < obj.length; arrIdx++) {
       retStr += (arrIdx>0 ? "," : "") + stringifyJSON( obj[arrIdx] );
@@ -57,24 +40,19 @@ var stringifyJSON = function(obj) {
 
   // PRIMITIVE TESTS...
   } else if( (typeof obj === 'number') ){
-    console.log('----------- Primitive Number - ' + obj + ' ' + typeof obj);
     return String( obj ); 
 
   } else if ( typeof obj === 'boolean' ){
-    console.log('----------- Primitive boolean.');
     return '' + obj + '';
 
   } else if ( typeof obj === 'string' ) {
-    console.log('----------- Primitive string.');
     return '"' + obj + '"';
   
   } else if ( typeof obj === 'object' ) {
-    console.log('+++++++++++ Is an Object... recurse it.');
     retStr += "{";
     var oCount = 0;
     for ( var oKey in obj ) { 
       if ( stringifiableValue(obj[oKey])==false ) {
-        console.log("UNstringifiableValue ---> " + obj[oKey]);
         retStr += '}';
         return retStr;
       } else {
@@ -83,47 +61,11 @@ var stringifyJSON = function(obj) {
      }
     };
     retStr += "}";
-console.log("+++++++++++ retStr = " +  retStr );
     return retStr;
 
   }
 
-console.log("------------------ DROP THRU ------------------");
-
-
-
-  // // OBJECT TESTS...
-  // for ( var p in obj ) { 
-  //   if(count>=1) { delimiter=','; }
-
-  //   if( obj[p] === undefined ) {
-  //     console.log('Object contained - undefined... ignoring.')
-  //     ; // ignore
-
-  //   } else if((typeof obj[p] === 'number') || (typeof obj[p] === 'boolean')) {
-  //     console.log('Object contained - number or boolean.');
-  //     retStr += delimiter + obj[p];
-
-  //   } else if(typeof obj[p] === 'string') {
-  //     console.log('Object contained - string.');
-  //     retStr += delimiter + "\"" + obj[p] + "\"";
-
-  //   } else if(typeof obj[p] === 'object') {
-  //     console.log('Object contained - object.');
-  //     retStr += delimiter + stringifyJSON( obj[p] );
-
-  //   }
-  //   count++;
-  // };
-
+  // Dropthru... shouldn't happen.
   return retStr + ']';
 };
-
-// console.log( stringifyJSON( [1, [2,4,6], "three"] ) ) ;
-// console.log( "My result:  " + stringifyJSON(9) ) ;
-
-
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify
-// JSON.stringify() tests:
-// console.log( stringifyJSON( [1, 'false', false] ) );
 
