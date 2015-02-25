@@ -10,7 +10,7 @@ var stringifyJSON = function(obj) {
   var count = 0;
   var delimiter = "[";
 
-  console.log(">>> Value (type): " + obj + " (" + typeof obj + ") <<<");
+  console.log("" + obj + " (" + typeof obj + "):");
 
 // if(obj === undefined) { console.log("undefined!!!!!"); }
 // if(obj === null) { console.log("null!!!!!"); }
@@ -24,31 +24,31 @@ var stringifyJSON = function(obj) {
 
   // EMPTY TESTS...
   if( obj === undefined ) {
-    console.log('undefined value... ignoring.')
+    console.log('----------- undefined value... ignoring.')
     return;
 
   } else if( obj === null ) {
-    console.log('null value... ignoring.')
+    console.log('----------- null value... ignoring.')
     return 'null';
 
 
   // ARRAY TESTS...
   } else if( Array.isArray(obj) && obj.length==0 ){
-    console.log('empty array... [].');
+    console.log('----------- empty array... [].');
     return '[]';
 
   } else if( Array.isArray(obj) && obj.length>0 ){
-    console.log('Populated array... [x].');
+    console.log('----------- Populated array... [x].');
     retStr += '[';
     for (var arrIdx = 0; arrIdx < obj.length; arrIdx++) {
-      retStr += stringifyJSON( obj[arrIdx] );
+      retStr += (arrIdx>0 ? "," : "") + stringifyJSON( obj[arrIdx] );
     };
     // retStr += ']';
 
 
   // PRIMITIVE TESTS...
   } else if( (typeof obj === 'number') ){
-    console.log('Primitive Number - ' + obj + ' ' + typeof obj);
+    console.log('----------- Primitive Number - ' + obj + ' ' + typeof obj);
 
 
 
@@ -63,15 +63,15 @@ var stringifyJSON = function(obj) {
 
     */
   } else if ( typeof obj === 'boolean' ){
-    console.log('Primitive boolean.');
+    console.log('----------- Primitive boolean.');
     return '' + obj + '';
 
   } else if ( typeof obj === 'string' ) {
-    console.log('Primitive string.');
+    console.log('----------- Primitive string.');
     return '"' + obj + '"';
   
   } else if ( typeof obj === 'object' ) {
-    console.log('Is an Object... recurse it.');
+    console.log('+++++++++++ Is an Object... recurse it.');
     return "<some object>"; //stringifyJSON( obj );
 
   }
