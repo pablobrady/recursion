@@ -5,12 +5,15 @@
 
 // but you don't so you're going to write it from scratch:
 
+var supercounter = 0;
+
 var stringifyJSON = function(obj) {
   var retStr = "";
   var count = 0;
   var delimiter = "[";
 
-  console.log("" + obj + " (" + typeof obj + "):");
+  supercounter++;
+  console.log("#" + supercounter + " - " + obj + " (" + typeof obj + "):");
 
 // if(obj === undefined) { console.log("undefined!!!!!"); }
 // if(obj === null) { console.log("null!!!!!"); }
@@ -21,6 +24,11 @@ var stringifyJSON = function(obj) {
 
 // Be warned/Caution JS normally thinks:  typeof NaN === Number
 
+  var stringifiableValue = function(testValue) {
+    if (testValue === undefined ) { return false; };
+    if (typeof testValue === "function") { return false; };
+    return true; 
+  }
 
   // EMPTY TESTS...
   if( obj === undefined ) {
@@ -65,11 +73,17 @@ var stringifyJSON = function(obj) {
     retStr += "{";
     var oCount = 0;
     for ( var oKey in obj ) { 
-      retStr += (oCount>0 ? ',' : '') + '"' + oKey + '":' + stringifyJSON( obj[oKey] );
-      oCount++;
+      if ( stringifiableValue(obj[oKey])==false ) {
+        console.log("UNstringifiableValue ---> " + obj[oKey]);
+        retStr += '}';
+        return retStr;
+      } else {
+        retStr += (oCount>0 ? ',' : '') + '"' + oKey + '":' + stringifyJSON( obj[oKey] );
+        oCount++;
+     }
     };
     retStr += "}";
-console.log("('+++++++++++" +  retStr );
+console.log("+++++++++++ retStr = " +  retStr );
     return retStr;
 
   }
