@@ -43,25 +43,15 @@ var stringifyJSON = function(obj) {
     for (var arrIdx = 0; arrIdx < obj.length; arrIdx++) {
       retStr += (arrIdx>0 ? "," : "") + stringifyJSON( obj[arrIdx] );
     };
-    // retStr += ']';
+    retStr += ']';
+    return retStr;
 
 
   // PRIMITIVE TESTS...
   } else if( (typeof obj === 'number') ){
     console.log('----------- Primitive Number - ' + obj + ' ' + typeof obj);
+    return String( obj ); 
 
-
-
-    return String( obj ); // "" + obj + "";
-    /*
-      9 != '9' --> return obj(==9) fails.
-      "" (empty str) + obj + "" (empty str) --> succeeds against '9'
-      String( obj ) --> succeeds against '9'
-
-      '' != 'null' --> assert fails with ("" + obj + "").
-
-
-    */
   } else if ( typeof obj === 'boolean' ){
     console.log('----------- Primitive boolean.');
     return '' + obj + '';
@@ -72,10 +62,19 @@ var stringifyJSON = function(obj) {
   
   } else if ( typeof obj === 'object' ) {
     console.log('+++++++++++ Is an Object... recurse it.');
-    return "<some object>"; //stringifyJSON( obj );
+    retStr += "{";
+    var oCount = 0;
+    for ( var oKey in obj ) { 
+      retStr += (oCount>0 ? ',' : '') + '"' + oKey + '":' + stringifyJSON( obj[oKey] );
+      oCount++;
+    };
+    retStr += "}";
+console.log("('+++++++++++" +  retStr );
+    return retStr;
 
   }
 
+console.log("------------------ DROP THRU ------------------");
 
 
 
