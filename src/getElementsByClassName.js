@@ -7,52 +7,63 @@
 var getElementsByClassName = function(className){
   // console.log("className = " + className);  // targetClassName
 
+console.log("------------------------");
+
   // You should use document.body, element.childNodes, and element.classList
   
-  // Generic Body
-  var retArray = [];
-  retArray.push( document.getElementsByTagName('body').item(0) );
+  var doesElementContainTargetClass = function(aClassList) {
+    if (!aClassList) { return false; }
 
-
-  // ================
-
-  // 1)
-  retArray.push( document.getElementsByTagName('p').item(0) );
-
-  // 2) 
-  // retArray.push( document.getElementsByTagName('p').item(0) );
-
-  // 3
-  // retArray.push( document.getElementsByTagName('p').item(0).nextSibling );
-
-  // 4
-  // retArray.push( document.getElementsByTagName('p').item(0).nextSibling );
-  // retArray.push( document.getElementsByTagName('p').item(0).nextSibling.nextSibling );
-
-  // 5
-  // retArray.push( document.getElementsByTagName('p').item(0).nextSibling.nextSibling.nextSibling );
-
-  // 6
-  // retArray.push( document.getElementsByTagName('p').item(0).nextSibling );
-  // retArray.push( document.getElementsByTagName('p').item(0).nextSibling.nextSibling );
-
-  // 7
-  // retArray.push( document.getElementsByTagName('p').item(0).nextSibling.firstChild.firstChild );
-
-
-  // var workingStr = retArray[1];
-  console.log("TEST LOG:");
-  var elements = document.getElementsByTagName('p');
-  for (var i = 0; i < elements.length; i++) {
-    var temp = elements[i].className.toString();
-    if( temp.indexOf("targetClassName")>=0 ) {
-      console.log("FOUND!");
+    var isFound = false;
+    for(var p=0; p<aClassList.length; p++) {
+      if (aClassList[p]===className) {
+        isFound = true;
+      }
     }
-    console.log(elements[i]);
+    return isFound;
   };
-  console.log("TEST LOG END.");
 
+  var findDescendants = function(testElement, foundElements) {
+    while( testElement ) {
+      console.log("(TEST)");
+      console.log(testElement);
+      if( doesElementContainTargetClass( testElement.classList ) ) {
+        console.log("-- RETARRAY(" + retArray.length + ")  FOUND!");
+        foundElements.push( testElement );
+      } else {
+        console.log("------- Checking Grandchild -------");
+        console.log(retArray);
+        // var lineage = getElementsByClassName(className, retArray[1]);
+      }
+      testElement = testElement.nextSibling;
+    }
+    return foundElements;
+  };
+  
+
+  // Initialization
+  var retArray = [];
+  if (!retArray || !retArray[0] ) { retArray.push( document.getElementsByTagName('body').item(0) ); }
+
+  // Test Elements
+  console.log("Does ELEMENT contain Target Class?");
+  var testElement = document.getElementsByTagName('p').item(0);
+  var foundElements = [];
+
+  // Find the Elements (current, child-element, grand-child-elements, etc.)
+  foundElements = findDescendants(testElement, foundElements);
+
+  // Add found elements to retArray.
+  var fLen = foundElements ? foundElements.length : 0;
+  for (var i = 0; i < fLen; i++) {
+    console.log("ADDING FOUND ELEMENT(S)...");
+    console.log(foundElements[i]);
+    retArray.push( foundElements[i] );
+  };
+
+  // if(retArray.length<=1) {
+  //   console.log("KEEP LOOKING....");
+  // }
 
   return retArray;
-
 };
