@@ -44,8 +44,8 @@ var getElementsByClassName = function(className){
   console.log("TEST LOG:");
   var elements = document.getElementsByTagName('p');
   for (var i = 0; i < elements.length; i++) {
-    var temp = String(elements[i]);
-    if( temp.indexOf("targetClassName")) {
+    var temp = elements[i].className.toString();
+    if( temp.indexOf("targetClassName")>=0 ) {
       console.log("FOUND!");
     }
     console.log(elements[i]);
