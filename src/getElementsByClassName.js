@@ -23,35 +23,48 @@ console.log("------------------------");
     return isFound;
   };
 
-  var findDescendants = function(testElement, foundElements) {
-    while( testElement ) {
-      console.log("(TEST)");
-      console.log(testElement);
-      if( doesElementContainTargetClass( testElement.classList ) ) {
-        console.log("-- RETARRAY(" + retArray.length + ")  FOUND!");
-        foundElements.push( testElement );
-      } else {
-        console.log("------- Checking Grandchild -------");
-        console.log(retArray);
-        // var lineage = getElementsByClassName(className, retArray[1]);
+  var recurseAndAdd = function(elem, foundElements) {
+    console.log("recurseAndAdd.");
+    foundElements.push(elem);
+    var children = elem.childNodes;
+    console.log("LOWER LEVEL - B");
+    console.log(children); // !!!!!!!!
+    for( var b = 0; b<children.length; b++ ) {
+      if(children[b].nodeType === 1) {
+        recurseAndAdd(children[b], foundElements);
       }
-      testElement = testElement.nextSibling;
     }
-    return foundElements;
-  };
-  
+  }
+
 
   // Initialization
   var retArray = [];
   if (!retArray || !retArray[0] ) { retArray.push( document.getElementsByTagName('body').item(0) ); }
 
+
   // Test Elements
-  console.log("Does ELEMENT contain Target Class?");
-  var testElement = document.getElementsByTagName('p').item(0);
   var foundElements = [];
 
-  // Find the Elements (current, child-element, grand-child-elements, etc.)
-  foundElements = findDescendants(testElement, foundElements);
+
+  // PARENT LOOP
+  for (var i = 0; i < document.getElementsByTagName('p').length; i++) {
+    var testElement = document.getElementsByTagName('p').item(i);
+    if ( doesElementContainTargetClass(testElement.classList) ) {
+      foundElements.push(testElement);
+    }
+    console.log("testElement:");
+    console.log(testElement);
+    var topChildNodes = testElement.childNodes;
+    console.log("topChildNodes = " + topChildNodes.length);
+    for( var a = 0; a < topChildNodes.length; a++ ) {
+      if (topChildNodes[a].nodeType === 1) {
+        console.log("TOP LEVEL - A");
+        console.log(topChildNodes[a]); // !!!!!!!!
+        recurseAndAdd(topLevel[a], foundElements);
+      }
+    }
+  };
+
 
   // Add found elements to retArray.
   var fLen = foundElements ? foundElements.length : 0;
@@ -60,10 +73,6 @@ console.log("------------------------");
     console.log(foundElements[i]);
     retArray.push( foundElements[i] );
   };
-
-  // if(retArray.length<=1) {
-  //   console.log("KEEP LOOKING....");
-  // }
 
   return retArray;
 };
