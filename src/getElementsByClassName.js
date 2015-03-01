@@ -11,31 +11,27 @@ console.log("------------------------");
 
   // You should use document.body, element.childNodes, and element.classList
   
-  var doesElementContainTargetClass = function(aClassList) {
-    if (!aClassList) { return false; }
-
-    var isFound = false;
-    for(var p=0; p<aClassList.length; p++) {
-      if (aClassList[p]===className) {
-        isFound = true;
-      }
-    }
-    return isFound;
-  };
-
   var recurseAndAdd = function(elem, foundElements) {
-    console.log("recurseAndAdd.");
-    foundElements.push(elem);
-    var children = elem.childNodes;
-    console.log("LOWER LEVEL - B");
-    console.log(children); // !!!!!!!!
-    for( var b = 0; b<children.length; b++ ) {
-      if(children[b].nodeType === 1) {
-        recurseAndAdd(children[b], foundElements);
+    if (elem.className.indexOf(className)>=0) {
+      console.log("FoundElement (" + className + "):  Adding.");
+      foundElements.push(elem);
+    };
+    var children = "";
+    if ( elem.childNodes>0 ) {
+      children = elem.childNodes;
+      // console.log("elem.childNodes = " + children); // !!!!!!!!
+      // console.log("elem.childNodes.length = " + children.length); // !!!!!!!!
+      for( var b = 0; b<children.length; b++ ) {
+        if(children[b].nodeType === 1) {
+          recurseAndAdd(children[b], foundElements);
+        }
       }
-    }
+    } 
   }
 
+/*
+  <p><div class="somediv"><div class="innerdiv"><span class="targetClassName">yay</span></div></div></p>
+*/
 
   // Initialization
   var retArray = [];
@@ -44,32 +40,21 @@ console.log("------------------------");
 
   // Test Elements
   var foundElements = [];
+  var startingPoint = document.getElementsByTagName('p').item(0);
 
-
-  // PARENT LOOP
-  for (var i = 0; i < document.getElementsByTagName('p').length; i++) {
-    var testElement = document.getElementsByTagName('p').item(i);
-    if ( doesElementContainTargetClass(testElement.classList) ) {
-      foundElements.push(testElement);
-    }
-    console.log("testElement:");
-    console.log(testElement);
-    var topChildNodes = testElement.childNodes;
-    console.log("topChildNodes = " + topChildNodes.length);
-    for( var a = 0; a < topChildNodes.length; a++ ) {
-      if (topChildNodes[a].nodeType === 1) {
-        console.log("TOP LEVEL - A");
-        console.log(topChildNodes[a]); // !!!!!!!!
-        recurseAndAdd(topLevel[a], foundElements);
-      }
-    }
-  };
-
+  // Main Loop
+  recurseAndAdd( startingPoint, foundElements );
+  var aSib = startingPoint.nextSibling;
+  while( aSib ) {
+    console.log("Next root sibling... " + aSib.nodeName + " (" + aSib.className + ")");
+    recurseAndAdd( aSib, foundElements );
+    aSib = aSib.nextSibling;
+  }
 
   // Add found elements to retArray.
   var fLen = foundElements ? foundElements.length : 0;
   for (var i = 0; i < fLen; i++) {
-    console.log("ADDING FOUND ELEMENT(S)...");
+    // console.log("ADDING FOUND ELEMENT(S)...");
     console.log(foundElements[i]);
     retArray.push( foundElements[i] );
   };
