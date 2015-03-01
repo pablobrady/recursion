@@ -5,22 +5,17 @@
 
 // But instead we're going to implement it from scratch:
 var getElementsByClassName = function(className){
-  // console.log("className = " + className);  // targetClassName
-
-console.log("------------------------");
-
-  // You should use document.body, element.childNodes, and element.classList
+  // "You should use document.body, element.childNodes, and element.classList"
   
   var recurseAndAdd = function(elem, foundElements) {
     if (elem.className.indexOf(className)>=0) {
       console.log("FoundElement (" + className + "):  Adding.");
       foundElements.push(elem);
     };
+    console.log("elem = " + elem.nodeName + "; class = " + elem.className + "; childNodes = " + elem.childNodes.length);
     var children = "";
-    if ( elem.childNodes>0 ) {
+    if ( elem.childNodes.length>0 ) {
       children = elem.childNodes;
-      // console.log("elem.childNodes = " + children); // !!!!!!!!
-      // console.log("elem.childNodes.length = " + children.length); // !!!!!!!!
       for( var b = 0; b<children.length; b++ ) {
         if(children[b].nodeType === 1) {
           recurseAndAdd(children[b], foundElements);
@@ -30,7 +25,13 @@ console.log("------------------------");
   }
 
 /*
-  <p><div class="somediv"><div class="innerdiv"><span class="targetClassName">yay</span></div></div></p>
+  #7:
+    READS AS:  
+    <p><div class="somediv"><div class="innerdiv"><span class="targetClassName">yay</span></div></div></p>
+
+    INTERPRETED AS:
+    <p></p><div class="somediv"><div class="innerdiv"><span class="targetClassName">yay</span></div></div><p></p>
+
 */
 
   // Initialization
@@ -51,10 +52,9 @@ console.log("------------------------");
     aSib = aSib.nextSibling;
   }
 
-  // Add found elements to retArray.
+  // Add found elements to retArray[1].
   var fLen = foundElements ? foundElements.length : 0;
   for (var i = 0; i < fLen; i++) {
-    // console.log("ADDING FOUND ELEMENT(S)...");
     console.log(foundElements[i]);
     retArray.push( foundElements[i] );
   };
