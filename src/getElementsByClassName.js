@@ -6,29 +6,21 @@
 // But instead we're going to implement it from scratch:
 var getElementsByClassName = function(className){
   var results = [];
-  var body = document.body;
 
-  var searchNodes = function(child){
-  	for (var i=0 ; i<child.childNodes.length ; i++) {
-  		if (child.childNodes[i].className){
-		  	var parts = child.childNodes[i].className.split();
-		  	if (parts.indexOf(className) >= 0){
-		  		results.push(child.childNodes[i]);
-		  	}
-		  }
-	  	searchNodes(child.childNodes[i]);
-  	}
+  var searchNodes = function(element){
+    if (element.classList !== undefined){         //check if element has class name
+      var parts = element.className.split(" ");      
+      if (parts.indexOf(className) >= 0){         //check if element class name is target class name
+        results.push(element)                     //if so, push to results
+        console.log(element);
+      }
+    }
+    for (var i=0 ; i<element.childNodes.length ; i++){
+      searchNodes(element.childNodes[i]);         //run searchNodes on all children
+    }
   };
 
-  for (var i=0 ; i<body.childNodes.length ; i++) {
-  	if (body.childNodes[i].className){
-	  	var parts = body.childNodes[i].className.split();
-	  	if (parts.indexOf(className) >= 0){
-	  		results.push(body.childNodes[i]);
-  		}
-  	}
-  	searchNodes(body.childNodes[i]);
-  };
+  searchNodes(document.body);
 
 
 
